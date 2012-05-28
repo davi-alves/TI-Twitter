@@ -6,14 +6,14 @@
 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<c:import var="headerHtml" url="partials/header.jsp"/>
-<c:import var="loginForm" url="partials/forms/loginForm.jsp"/>
-<c:import var="signupForm" url="partials/forms/signupIndex.jsp"/>
-<c:import var="footerHtml" url="partials/footer.jsp"/>
-
-
-${headerHtml}
-
+<c:if test="${message != null && message.getText() != null}">
+    <div class="alert alert-error span10">
+        <a class="close" data-dismiss="alert" href="#">×</a>
+        <strong>ERROR!</strong>
+        ${message.getText()}
+    </div>
+</c:if>
+<jsp:include page="partials/header.jsp"/>
 <div class="span7">
     <div class="hero-unit">
         <h1>Bem Vindo ao Twitter.</h1>
@@ -23,12 +23,12 @@ ${headerHtml}
 </div>
 
 <div class="span3 well login-div-home">
-    ${loginForm}
+    <jsp:include page="partials/forms/loginForm.jsp" />
 </div>
 
 <div class="span3 well signup-div-home">
     <h4 class="nav-header">Novo no Twitter?</h4>
-    ${signupForm}
+    <jsp:include page="partials/forms/signupIndex.jsp" />
 </div>
 
-${footerHtml}
+<jsp:include page="partials/footer.jsp" />

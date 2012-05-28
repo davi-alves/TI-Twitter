@@ -8,7 +8,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 
-<c:set scope="request" var="baseUrl" value="${pageContext.request.contextPath}/public" />
+<c:set scope="request" var="baseUrl" value="public" />
 <c:import var="navbar" url="partials/navbar.jsp"/>
 
 <html>

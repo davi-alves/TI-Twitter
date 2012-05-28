@@ -16,8 +16,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author davi
  */
-@WebServlet(name = "Front", urlPatterns = {"/front"})
-public class Front extends HttpServlet {
+@WebServlet(name = "Profile", urlPatterns = {"/profile"})
+public class Profile extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -31,23 +31,15 @@ public class Front extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        try {
-            /*
-             * TODO output your page here. You may use following sample code.
-             */
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet Front</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet Front at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        } finally {            
-            out.close();
+        String action = request.getParameter("action");
+        if (action.equals("login")) {
+            this.loginAction(request, response);
         }
+    }
+
+    protected void loginAction(HttpServletRequest request, HttpServletResponse response) {
+        String login = request.getParameter("login");
+        String senha = request.getParameter("senha");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
