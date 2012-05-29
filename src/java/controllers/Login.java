@@ -6,13 +6,16 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.WebServlet;
 
 import helpers.Helper;
+import helpers.Message;
+
+import models.UsersModel;
 
 /**
  *
  * @author davi
  */
-@WebServlet(name = "Home", urlPatterns = {"/home"})
-public class Home extends HttpServlet {
+@WebServlet(name = "Login", urlPatterns = {"/login"})
+public class Login extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -26,8 +29,23 @@ public class Home extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Helper.getMessage(request);
-        getServletContext().getRequestDispatcher("/home.jsp").forward(request, response);
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        try {
+            models.beans.User user = UsersModel.authenticate(username, password);
+            if (user == null) {
+                request.setAttribute("message", new Message("Login ou senha inválidos", "error"));
+                getServletContext().getRequestDispatcher("/home.jsp").forward(request, response);
+                return;
+            }
+
+            request.getSession().setAttribute("user", user);
+            response.sendRedirect(response.encodeRedirectURL(request.getContextPath() + "/profile"));
+
+        } catch (Exception e) {
+            request.setAttribute("message", new Message(e.getMessage(), "error"));
+            getServletContext().getRequestDispatcher("/home.jsp").forward(request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
