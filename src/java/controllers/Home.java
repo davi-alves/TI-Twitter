@@ -29,7 +29,6 @@ public class Home extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Helper.getMessage(request);
-        request.setAttribute("users", UsersModel.findAll());
         getServletContext().getRequestDispatcher("/home.jsp").forward(request, response);
     }
 

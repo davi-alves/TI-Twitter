@@ -9,29 +9,37 @@ public class Message {
     private String text;
     private String type;
 
+    public Message() {
+    }
+
+    public Message(String text, String type) {
+        this.text = text;
+        this.type = type;
+    }
+
     /**
-     * @param text 
+     * @param text
      */
     public void setText(String text) {
         this.text = text;
     }
 
     /**
-     * @param type 
+     * @param type
      */
     public void setType(String type) {
         this.type = type;
     }
 
     /**
-     * @return 
+     * @return
      */
     public String getText() {
         return text;
     }
 
     /**
-     * @return 
+     * @return
      */
     public String getType() {
         return type;

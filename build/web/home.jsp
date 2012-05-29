@@ -6,6 +6,8 @@
 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<jsp:include page="partials/header.jsp"/>
+
 <c:if test="${message != null && message.getText() != null}">
     <div class="alert alert-error span10">
         <a class="close" data-dismiss="alert" href="#">×</a>
@@ -13,7 +15,7 @@
         ${message.getText()}
     </div>
 </c:if>
-<jsp:include page="partials/header.jsp"/>
+
 <div class="span7">
     <div class="hero-unit">
         <h1>Bem Vindo ao Twitter.</h1>

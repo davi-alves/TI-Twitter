@@ -12,13 +12,17 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class Helper {
 
+    public static boolean isEmpty(String string) {
+        return (string == null || string == "" || string.isEmpty());
+    }
+
     /**
      * @param request
-     * @return 
+     * @return
      */
     public static void getMessage(HttpServletRequest request) {
         Message m = (Message) request.getAttribute("message");
-        if(m == null){
+        if (m == null) {
             m = new Message();
         }
         request.setAttribute("message", m);

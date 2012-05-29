@@ -2,58 +2,80 @@ package models;
 
 import java.sql.*;
 import java.util.*;
-import models.bean.User;
+import models.beans.User;
 
 /**
  *
  * @author davi
  */
 public class UsersModel {
-    
-    public static User find(long id){
+
+    public static User find(long id) throws SQLException, ClassNotFoundException {
         User user = null;
-        try{
-            
-        }catch(Exception e){
-            e.printStackTrace();
+        PreparedStatement pstmt = Conn.getConnection().prepareStatement(
+                "SELECT * FROM users");
+        ResultSet rs = pstmt.executeQuery();
+        if (rs.next()) {
+            fillObject(rs, user);
         }
         return user;
     }
 
     /**
-     * @return
-     * @throws SQLException 
+     * @return @throws SQLException
      */
-    public static ArrayList<User> findAll() {
-        try {
-            ArrayList<User> users = null;
-            PreparedStatement pstmt = Conn.getConnection().prepareStatement(
-                    "SELECT * FROM users");
-            ResultSet rs = pstmt.executeQuery();
+    public static ArrayList<User> findAll() throws SQLException, ClassNotFoundException {
+        ArrayList<User> users = null;
+        PreparedStatement pstmt = Conn.getConnection().prepareStatement(
+                "SELECT * FROM users");
+        ResultSet rs = pstmt.executeQuery();
 
-            if (rs.next()) {
-                users = new ArrayList<User>();
-                do {
-                    User user = new User();
-                    user.setId(rs.getLong("id"));
-                    user.setName(rs.getString("nome"));
-                    user.setEmail(rs.getString("email"));
-                    user.setUsername(rs.getString("username"));
-                    user.setPassword(rs.getString("password"));
-                    user.setSex(rs.getString("sex"));
+        if (rs.next()) {
+            users = new ArrayList<User>();
+            do {
+                User user = null;
+                System.out.println(rs.getString("name"));
+                fillObject(rs, user);
+                users.add(user);
+            } while (rs.next());
+        } else {
+            System.out.print("nenhum usuário encontrado");
+        }
+        rs.close();
+        pstmt.close();
 
-                    users.add(user);
-                } while (rs.next());
-            }else{
-                System.out.print("nenhum usuário encontrado");
-            }
-            rs.close();
-            pstmt.close();
-            return users;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+        return users;
+
+    }
+
+    public static User authenticate(String username, String password) throws SQLException, ClassNotFoundException {
+        User user = null;
+        PreparedStatement pstmt = Conn.getConnection().prepareStatement(
+                "SELECT * FROM users WHERE username = ? AND password = SHA1( ? )");
+        pstmt.setString(1, username);
+        pstmt.setString(2, password);
+        ResultSet rs = pstmt.executeQuery();
+        if (rs.next()) {
+            user = new User();
+            user.setId(rs.getLong("id"));
+            user.setName(rs.getString("name"));
+            user.setEmail(rs.getString("email"));
+            user.setUsername(rs.getString("username"));
+            user.setPassword(rs.getString("password"));
+            user.setSex(rs.getString("sex"));
+            System.out.println(user.getName());
         }
 
+        return user;
+    }
+
+    private static void fillObject(ResultSet rs, User user) throws SQLException {
+        user = new User();
+        user.setId(rs.getLong("id"));
+        user.setName(rs.getString("name"));
+        user.setEmail(rs.getString("email"));
+        user.setUsername(rs.getString("username"));
+        user.setPassword(rs.getString("password"));
+        user.setSex(rs.getString("sex"));
     }
 }

@@ -1,4 +1,4 @@
-package models.bean;
+package models.beans;
 
 /**
  *
