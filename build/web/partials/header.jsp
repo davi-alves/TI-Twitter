@@ -9,7 +9,6 @@
 <!DOCTYPE html>
 
 <c:set scope="request" var="baseUrl" value="public" />
-<c:import var="navbar" url="partials/navbar.jsp"/>
 
 <html>
 <head>
@@ -26,5 +25,10 @@
     <![endif]-->
 </head>
 <body>
-    ${navbar}
+    <c:if test="${user != null}">
+        <jsp:include page="profile/navbar.jsp"/>
+    </c:if>
+    <c:if test="${user == null}">
+        <jsp:include page="navbar.jsp"/>
+    </c:if>
     <div class="container margin-top">

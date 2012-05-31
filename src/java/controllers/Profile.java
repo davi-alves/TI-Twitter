@@ -30,15 +30,14 @@ public class Profile extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getParameter("action");
 
-        homeAction(request, response);
-//        if (Helper.isEmpty(action)) {
-//            homeAction(request, response);
-//        }
+        if (Helper.isEmpty(action)) {
+            homeAction(request, response);
+        }
     }
 
     protected void homeAction(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (request.getSession().getAttribute("user") == null) {
-            response.sendRedirect(response.encodeRedirectURL(request.getContextPath() + "/home"));
+            response.sendRedirect(response.encodeRedirectURL(request.getContextPath()));
             return;
         }
 

@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 public class Helper {
 
     public static boolean isEmpty(String string) {
-        return (string == null || string == "" || string.isEmpty());
+        return (string == null || string.isEmpty());
     }
 
     /**

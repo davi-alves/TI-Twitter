@@ -4,7 +4,7 @@
     Author     : davi
 --%>
 
-<form id="form-login" method="POST" action="login">
+<form id="form-login" method="POST" action="session">
     <input type="hidden" name="action" value="login">
     <input type="text" id="login" name="username" class="span3" placeholder="Login">
     <input type="password" id="senha" name="password" class="span2" placeholder="Senha">

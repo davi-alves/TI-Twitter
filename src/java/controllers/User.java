@@ -33,6 +33,11 @@ public class User extends HttpServlet {
             throws ServletException, IOException {
         
     }
+    
+    protected void signupAction(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

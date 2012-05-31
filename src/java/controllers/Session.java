@@ -5,8 +5,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.WebServlet;
 
-import helpers.Helper;
-import helpers.Message;
+import helpers.*;
 
 import models.UsersModel;
 
@@ -14,8 +13,8 @@ import models.UsersModel;
  *
  * @author davi
  */
-@WebServlet(name = "Login", urlPatterns = {"/login"})
-public class Login extends HttpServlet {
+@WebServlet(name = "Session", urlPatterns = {"/session"})
+public class Session extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -28,6 +27,29 @@ public class Login extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String action = request.getParameter("action");
+        System.out.println(action);
+
+        if (Helper.isEmpty(action)) {
+            response.sendRedirect(response.encodeRedirectURL(request.getContextPath()));
+            return;
+        }
+
+        if (action.equals("login")) {
+            loginAction(request, response);
+            return;
+        }
+
+        if (action.equals("logout")) {
+            logoutAction(request, response);
+            return;
+        }
+
+        response.sendRedirect(response.encodeRedirectURL(request.getContextPath()));
+    }
+
+    protected void loginAction(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
@@ -42,6 +64,17 @@ public class Login extends HttpServlet {
             request.getSession().setAttribute("user", user);
             response.sendRedirect(response.encodeRedirectURL(request.getContextPath() + "/profile"));
 
+        } catch (Exception e) {
+            request.setAttribute("message", new Message(e.getMessage(), "error"));
+            getServletContext().getRequestDispatcher("/home.jsp").forward(request, response);
+        }
+    }
+
+    protected void logoutAction(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            request.getSession().removeAttribute("user");
+            response.sendRedirect(response.encodeRedirectURL(request.getContextPath()));
         } catch (Exception e) {
             request.setAttribute("message", new Message(e.getMessage(), "error"));
             getServletContext().getRequestDispatcher("/home.jsp").forward(request, response);

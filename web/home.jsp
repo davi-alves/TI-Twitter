@@ -9,7 +9,7 @@
 <jsp:include page="partials/header.jsp"/>
 
 <c:if test="${message != null && message.getText() != null}">
-    <div class="alert alert-error span10">
+    <div class="alert alert-${message.getType()} span10">
         <a class="close" data-dismiss="alert" href="#">×</a>
         <strong>ERROR!</strong>
         ${message.getText()}
