@@ -16,7 +16,13 @@ public class UsersModel {
                 "SELECT * FROM users");
         ResultSet rs = pstmt.executeQuery();
         if (rs.next()) {
-            _fillObject(rs, user);
+            user = new User();
+            user.setId(rs.getLong("id"));
+            user.setName(rs.getString("name"));
+            user.setEmail(rs.getString("email"));
+            user.setUsername(rs.getString("username"));
+            user.setPassword(rs.getString("password"));
+            user.setSex(rs.getString("sex"));
         }
         return user;
     }
@@ -27,8 +33,15 @@ public class UsersModel {
                 "SELECT * FROM users WHERE email = ?");
         pstmt.setString(1, email);
         ResultSet rs = pstmt.executeQuery();
+        System.out.println(pstmt);
         if (rs.next()) {
-            _fillObject(rs, user);
+            user = new User();
+            user.setId(rs.getLong("id"));
+            user.setName(rs.getString("name"));
+            user.setEmail(rs.getString("email"));
+            user.setUsername(rs.getString("username"));
+            user.setPassword(rs.getString("password"));
+            user.setSex(rs.getString("sex"));
         }
 
         return user;
@@ -41,7 +54,13 @@ public class UsersModel {
         pstmt.setString(1, username);
         ResultSet rs = pstmt.executeQuery();
         if (rs.next()) {
-            _fillObject(rs, user);
+            user = new User();
+            user.setId(rs.getLong("id"));
+            user.setName(rs.getString("name"));
+            user.setEmail(rs.getString("email"));
+            user.setUsername(rs.getString("username"));
+            user.setPassword(rs.getString("password"));
+            user.setSex(rs.getString("sex"));
         }
 
         return user;
@@ -59,9 +78,13 @@ public class UsersModel {
         if (rs.next()) {
             users = new ArrayList<User>();
             do {
-                User user = null;
-                System.out.println(rs.getString("name"));
-                _fillObject(rs, user);
+                User user = new User();
+                user.setId(rs.getLong("id"));
+                user.setName(rs.getString("name"));
+                user.setEmail(rs.getString("email"));
+                user.setUsername(rs.getString("username"));
+                user.setPassword(rs.getString("password"));
+                user.setSex(rs.getString("sex"));
                 users.add(user);
             } while (rs.next());
         } else {
@@ -82,35 +105,41 @@ public class UsersModel {
         pstmt.setString(2, password);
         ResultSet rs = pstmt.executeQuery();
         if (rs.next()) {
-            _fillObject(rs, user);
+            user = new User();
+            user.setId(rs.getLong("id"));
+            user.setName(rs.getString("name"));
+            user.setEmail(rs.getString("email"));
+            user.setUsername(rs.getString("username"));
+            user.setPassword(rs.getString("password"));
+            user.setSex(rs.getString("sex"));
         }
 
         return user;
     }
 
-    public User save(User user) throws SQLException, ClassNotFoundException {
-        PreparedStatement pstmt = Conn.getConnection().prepareStatement(
-                "INSERT INTO users (name, email, sex, username, password ) VALUES(?,?,?,?,?);");
+    public static User save(User user) throws SQLException, ClassNotFoundException {
+        String sql = "";
+        if (user.getId() > 0) {
+            sql = "UPDATE users set name = ?, email = ?, sex = ?, username = ?, password = ? WHERE id = ?;";
+        } else {
+            sql = "INSERT INTO users (name, email, sex, username, password ) VALUES(?, ?, ?, ?, SHA1(?));";
+        }
+
+        PreparedStatement pstmt = Conn.getConnection().prepareStatement(sql);
         pstmt.setString(1, user.getName());
         pstmt.setString(2, user.getEmail());
         pstmt.setString(3, user.getSex());
         pstmt.setString(4, user.getUsername());
         pstmt.setString(5, user.getPassword());
+        if (user.getId() > 0) {
+            pstmt.setLong(6, user.getId());
+        }
+
         int id = pstmt.executeUpdate();
         if (id > 0) {
             user.setId(Long.parseLong(String.valueOf(id)));
         }
 
         return user;
-    }
-
-    private static void _fillObject(ResultSet rs, User user) throws SQLException {
-        user = new User();
-        user.setId(rs.getLong("id"));
-        user.setName(rs.getString("name"));
-        user.setEmail(rs.getString("email"));
-        user.setUsername(rs.getString("username"));
-        user.setPassword(rs.getString("password"));
-        user.setSex(rs.getString("sex"));
     }
 }

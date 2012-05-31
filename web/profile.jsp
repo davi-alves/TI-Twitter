@@ -1,4 +1,4 @@
-<%-- 
+<%--
     Document   : index
     Created on : 11/05/2012, 11:22:53
     Author     : davi
@@ -8,35 +8,36 @@
 
 <jsp:include page="partials/header.jsp"/>
 
-<c:if test="${message != null && message.getText() != null}">
-    <div class="alert alert-error span10">
-        <a class="close" data-dismiss="alert" href="#">×</a>
-        <strong>ERROR!</strong>
-        ${message.getText()}
-    </div>
-</c:if>
+<jsp:include page="partials/messages.jsp"/>
 
-<h1>${user}</h1>
-<div class="row-fluid">
+<style type="text/css">
+    body {
+        background-image: url(public/images/bg.png);
+        background-position: left 40px;
+        background-attachment: fixed;
+        background-repeat: repeat;
+        background-repeat: no-repeat;
+        background-color: 
+            #C0DEED;
+    }
+    #user-status{margin-top: 20px;}
+</style>
+
+<div class="row">
     <div class="span3">
         <div class="well sidebar-nav">
-            <ul class="nav nav-list">
-                <li class="nav-header">Sidebar</li>
-                <li class="active"><a href="#">Link</a></li>
-                <li><a href="#">Link</a></li>
-                <li><a href="#">Link</a></li>
-                <li><a href="#">Link</a></li>
-                <li class="nav-header">Sidebar</li>
-                <li><a href="#">Link</a></li>
-                <li><a href="#">Link</a></li>
-                <li><a href="#">Link</a></li>
-                <li><a href="#">Link</a></li>
-                <li><a href="#">Link</a></li>
-                <li><a href="#">Link</a></li>
-                <li class="nav-header">Sidebar</li>
-                <li><a href="#">Link</a></li>
-                <li><a href="#">Link</a></li>
-                <li><a href="#">Link</a></li>
+            <ul class="nav nav-list" id="user-status">
+                <li><h3>${user.getName()}</h3></li>
+                <li>
+                    <ul>
+                        <li> 4 TWEETS</li>
+                        <li> 21 FALLOWING</li>
+                        <li> 4 FALLOWERS</li>
+                    </ul>
+                </li>
+                <li>
+                    <jsp:include page="partials/forms/tweet.jsp"/>
+                </li>
             </ul>
         </div><!--/.well -->
     </div><!--/span-->

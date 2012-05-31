@@ -40,6 +40,7 @@ public class Profile extends HttpServlet {
             response.sendRedirect(response.encodeRedirectURL(request.getContextPath()));
             return;
         }
+        Helper.getMessage(request);
 
         getServletContext().getRequestDispatcher("/profile.jsp").forward(request, response);
     }

@@ -29,7 +29,6 @@ public class Session extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
-        System.out.println(action);
 
         if (Helper.isEmpty(action)) {
             response.sendRedirect(response.encodeRedirectURL(request.getContextPath()));

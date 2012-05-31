@@ -12,6 +12,7 @@
     .hero-unit{border: 1px solid #ddd; background-color: #FFF;}
 </style>
 
+<jsp:include page="partials/messages.jsp"/>
 
 <div class="span8 offset2">
     <div class="hero-unit">

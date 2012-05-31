@@ -41,7 +41,7 @@ public class Signup extends HttpServlet {
             return;
         }
 
-        if (action.equals("logout")) {
+        if (action.equals("signup")) {
             signupAction(request, response);
             return;
         }
@@ -64,7 +64,7 @@ public class Signup extends HttpServlet {
 
         //- CHECK IF EMAIL EXISTES
         try {
-            if (UsersModel.findByEmail(email) != null) {
+            if ( UsersModel.findByEmail(email) != null) {
                 request.setAttribute("message", new Message("Seu email já existe em nosso banco de dados", "info"));
                 getServletContext().getRequestDispatcher("/home.jsp").forward(request, response);
                 return;
@@ -91,11 +91,11 @@ public class Signup extends HttpServlet {
             throws ServletException, IOException {
 
         //- VALIDATES THE REQUEST PARAMETERS
-        String name = request.getParameter("name");
-        String email = request.getParameter("email");
-        String sex = request.getParameter("sex");
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
+        String name = request.getParameter("name").trim();
+        String email = request.getParameter("email").trim();
+        String sex = request.getParameter("sex").trim();
+        String username = request.getParameter("username").trim();
+        String password = request.getParameter("password").trim();
         if (Helper.isEmpty(email) || Helper.isEmpty(username) || Helper.isEmpty(password)) {
             request.setAttribute("message", new Message("Favor preencher todos os dados", "error"));
             getServletContext().getRequestDispatcher("/home.jsp").forward(request, response);
@@ -108,20 +108,25 @@ public class Signup extends HttpServlet {
         userSignup.setEmail(email);
         userSignup.setUsername(username);
         userSignup.setPassword(password);
+        userSignup.setSex(sex);
         request.setAttribute("userSignup", userSignup);
 
         try {
             if (UsersModel.findByEmail(email) != null) {
-                request.setAttribute("message", new Message("Seu email já existe em nosso banco de dados", "warnning"));
+                request.setAttribute("message", new Message("Seu <strong>email</strong> já existe em nosso banco de dados", "info"));
                 getServletContext().getRequestDispatcher("/signup.jsp").forward(request, response);
                 return;
             }
 
             if (UsersModel.findByUsername(username) != null) {
-                request.setAttribute("message", new Message("Seu email já existe em nosso banco de dados", "warnning"));
+                request.setAttribute("message", new Message("Seu <strong>usuário</strong> já existe em nosso banco de dados", "info"));
                 getServletContext().getRequestDispatcher("/signup.jsp").forward(request, response);
                 return;
             }
+
+            UsersModel.save(userSignup);
+            request.getSession().setAttribute("user", userSignup);
+            response.sendRedirect(response.encodeRedirectURL(request.getContextPath() + "/profile"));
 
         } catch (Exception e) {
             request.setAttribute("message", new Message(e.getMessage(), "error"));
